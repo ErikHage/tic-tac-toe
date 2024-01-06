@@ -35,6 +35,8 @@ const BLANK = '';
 const X_PLACED = 'X';
 const O_PLACED = 'O';
 
+//https://dev.to/diseyi/implementing-tic-tac-toe-in-vue-57go
+
 export default {
   name: 'TicTacToe',
 
