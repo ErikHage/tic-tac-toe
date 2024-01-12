@@ -10,7 +10,11 @@
           Let's Play Tic Tac Toe!
         </h1>
 
-        <h3>Current Player is {{ currentPlayer }}</h3>
+        <h3>
+        <span v-if="this.isTie === true">Tie Game</span>
+        <span v-else-if="this.winner !== null">{{currentPlayer}} is the winner!</span>
+        <span v-else>Current Player is {{ currentPlayer }}</span>
+        </h3>
       </v-col>
 
       <v-col class="mb-5" cols="12">
@@ -23,7 +27,7 @@
                     class="d-flex"
                     height="150px"
                     @click="place(rowIndex, cellIndex)"
-                    :disabled="cell !== this.BLANK || this.tie || this.winner !== null">
+                    :disabled="cell !== this.BLANK || this.isTie || this.winner !== null">
                   {{ cell }}
                 </v-card>
               </v-col>
@@ -57,8 +61,7 @@ export default {
     logo,
     currentPlayer: X,
     winner: null,
-    tie: false,
-    round: 1,
+    isTie: false,
     board: [
       [BLANK, BLANK, BLANK],
       [BLANK, BLANK, BLANK],
@@ -76,11 +79,10 @@ export default {
         this.tie();
         return;
       }
-      this.incrementRound();
+      this.switchPlayer();
     },
-    incrementRound() {
+    switchPlayer() {
       this.currentPlayer = this.currentPlayer === this.X ? this.O : this.X;
-      this.round = this.round + 1;
     },
     checkWin: function () {
       const mark = this.currentPlayer;
@@ -102,18 +104,24 @@ export default {
       return false;
     },
     checkTie() {
-      return this.round >= 10;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (!this.board[i][j]) {
+            return false;
+          }
+        }
+      }
+      return true;
     },
     win() {
       this.winner = this.currentPlayer;
     },
     tie() {
-      this.tie = true;
+      this.isTie = true;
     },
     reset() {
-      this.round = 1;
       this.winner = null;
-      this.tie = false;
+      this.isTie = false;
       this.board = [
         [BLANK, BLANK, BLANK],
         [BLANK, BLANK, BLANK],
