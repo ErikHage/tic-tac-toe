@@ -10,11 +10,9 @@
           Let's Play Tic Tac Toe!
         </h1>
 
-        <h3>
-        <span v-if="this.isTie === true">Tie Game</span>
-        <span v-else-if="this.winner !== null">{{currentPlayer}} is the winner!</span>
-        <span v-else>Current Player is {{ currentPlayer }}</span>
-        </h3>
+        <h2 v-if="this.isTie === true">Tie Game</h2>
+        <h2 v-else-if="this.winner !== null">{{currentPlayer}} is the winner!</h2>
+        <h3 v-else>Current Player is {{ currentPlayer }}</h3>
       </v-col>
 
       <v-col class="mb-5" cols="12">
