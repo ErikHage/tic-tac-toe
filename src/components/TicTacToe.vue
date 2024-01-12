@@ -23,7 +23,7 @@
                     class="d-flex"
                     height="150px"
                     @click="place(rowIndex, cellIndex)"
-                    :disabled="cell !== this.BLANK">
+                    :disabled="cell !== this.BLANK || this.tie || this.winner !== null">
                   {{ cell }}
                 </v-card>
               </v-col>
@@ -32,6 +32,10 @@
           <v-col cols="4"></v-col>
         </v-row>
       </v-col>
+    </v-row>
+
+    <v-row justify="center">
+      <v-btn @click="reset">Reset</v-btn>
     </v-row>
   </v-container>
 </template>
@@ -46,14 +50,14 @@ const O = 'O';
 //https://dev.to/diseyi/implementing-tic-tac-toe-in-vue-57go
 
 export default {
-  name: 'TicTacToe',
-
   data: () => ({
     X: X,
     O: O,
     BLANK: BLANK,
     logo,
     currentPlayer: X,
+    winner: null,
+    tie: false,
     round: 1,
     board: [
       [BLANK, BLANK, BLANK],
@@ -61,32 +65,63 @@ export default {
       [BLANK, BLANK, BLANK]
     ],
   }),
-
   methods: {
     place(x, y) {
       this.board[x][y] = this.currentPlayer;
-      this.checkBoardState();
-      this.switchCurrentPlayer();
+      if (this.checkWin()) {
+        this.win();
+        return;
+      }
+      if (this.checkTie()) {
+        this.tie();
+        return;
+      }
+      this.incrementRound();
     },
-    switchCurrentPlayer() {
+    incrementRound() {
       this.currentPlayer = this.currentPlayer === this.X ? this.O : this.X;
       this.round = this.round + 1;
     },
-    checkBoardState() {
-      this.checkWin();
-      this.checkTie();
-    },
-    checkWin() {
+    checkWin: function () {
+      const mark = this.currentPlayer;
 
+      for (let i = 0; i < 3; i++) {
+        if (this.board[i].every(cell => cell === mark)) {
+          return true;
+        }
+        if (this.board.every(row => row[i] === mark)) {
+          return true;
+        }
+        if (this.board[0][0] === mark && this.board[1][1] === mark && this.board[2][2] === mark) {
+          return true;
+        }
+        if (this.board[0][2] === mark && this.board[1][1] === mark && this.board[2][0] === mark) {
+          return true;
+        }
+      }
+      return false;
     },
     checkTie() {
       return this.round >= 10;
     },
+    win() {
+      this.winner = this.currentPlayer;
+    },
+    tie() {
+      this.tie = true;
+    },
     reset() {
       this.round = 1;
-
+      this.winner = null;
+      this.tie = false;
+      this.board = [
+        [BLANK, BLANK, BLANK],
+        [BLANK, BLANK, BLANK],
+        [BLANK, BLANK, BLANK]
+      ];
     }
   },
+  name: 'TicTacToe',
 }
 </script>
 <style>
