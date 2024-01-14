@@ -10,9 +10,7 @@
           Let's Play Tic Tac Toe!
         </h1>
 
-        <h2 v-if="this.isTie === true">Tie Game</h2>
-        <h2 v-else-if="this.winner !== null">{{currentPlayer}} is the winner!</h2>
-        <h3 v-else>Current Player is {{ currentPlayer }}</h3>
+        <h2>{{messageText}}</h2>
       </v-col>
 
       <v-col class="mb-5" cols="12">
@@ -22,14 +20,12 @@
             <v-row v-for="(row, rowIndex) of board" :key="rowIndex" class="board-row">
               <v-col v-for="(cell, cellIndex) of row" cols="4" :key="cellIndex">
                 <v-card
-                    class="d-flex"
-                    height="150px"
+                    :class="getCardClasses()"
+                    height="120px"
                     @click="place(rowIndex, cellIndex)"
                     :disabled="cell !== this.BLANK || this.isTie || this.winner !== null">
                   <v-card-text>
-                    <span :class="getCellClasses(cell)">
-                      {{ cell }}
-                    </span>
+                    <span :class="getCellTextClasses(cell)">{{cell}}</span>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -70,6 +66,19 @@ export default {
       [BLANK, BLANK, BLANK]
     ],
   }),
+  computed: {
+    messageText() {
+      if (this.isTie) {
+        return "Tie Game";
+      }
+
+      if (this.winner !== null) {
+        return `${this.currentPlayer} is the winner!`;
+      }
+
+      return `Current Player: ${this.currentPlayer}`;
+    }
+  },
   methods: {
     place(x, y) {
       this.board[x][y] = this.currentPlayer;
@@ -130,12 +139,25 @@ export default {
         [BLANK, BLANK, BLANK]
       ];
     },
-    getCellClasses(cell) {
+    getCardClasses() {
+      let classes = ["d-flex", "align-center", "justify-center"];
+
+      if (this.winner !== null || this.isTie === true) {
+        classes.push("disabled-cell");
+      }
+
+      return classes.join(" ");
+    },
+    getCellTextClasses(cell) {
       let classes = ["board-cell"];
       if (cell === this.X) {
         classes.push("cell-x");
       } else if (cell === this.O) {
         classes.push("cell-o");
+      }
+
+      if (this.winner !== null || this.isTie === true) {
+        classes.push("disabled-cell");
       }
 
       return classes.join(" ");
@@ -156,5 +178,9 @@ export default {
 
 .cell-o {
   color: #00f;
+}
+
+.disabled-cell {
+  background-color: grey !important;
 }
 </style>
