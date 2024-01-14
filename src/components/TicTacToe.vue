@@ -19,14 +19,18 @@
         <v-row justify="center">
           <v-col cols="4"></v-col>
           <v-col class="mb-2" cols="4">
-            <v-row v-for="(row, rowIndex) of board" :key="rowIndex">
+            <v-row v-for="(row, rowIndex) of board" :key="rowIndex" class="board-row">
               <v-col v-for="(cell, cellIndex) of row" cols="4" :key="cellIndex">
                 <v-card
                     class="d-flex"
                     height="150px"
                     @click="place(rowIndex, cellIndex)"
                     :disabled="cell !== this.BLANK || this.isTie || this.winner !== null">
-                  {{ cell }}
+                  <v-card-text>
+                    <span :class="getCellClasses(cell)">
+                      {{ cell }}
+                    </span>
+                  </v-card-text>
                 </v-card>
               </v-col>
             </v-row>
@@ -125,12 +129,27 @@ export default {
         [BLANK, BLANK, BLANK],
         [BLANK, BLANK, BLANK]
       ];
+    },
+    getCellClasses(cell) {
+      let classes = ["board-cell"];
+      if (cell === this.X) {
+        classes.push("cell-x");
+      } else if (cell === this.O) {
+        classes.push("cell-o");
+      }
+
+      return classes.join(" ");
     }
   },
   name: 'TicTacToe',
 }
 </script>
 <style>
+.board-cell {
+  font-size: 60px;
+  cursor: pointer;
+}
+
 .cell-x {
   color: #f00;
 }
