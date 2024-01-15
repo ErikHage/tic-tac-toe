@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  tic-tac-toe:
+    restart: always
+    image: ehage/tic-tac-toe:${VERSION_TAG}
+    container_name: tic-tac-toe
+    ports:
+      - '33458:80'
