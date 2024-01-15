@@ -14,6 +14,7 @@ export default defineConfig({
     }),
   ],
   define: { 'process.env': {} },
+  base: '/apps/tic-tac-toe',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
