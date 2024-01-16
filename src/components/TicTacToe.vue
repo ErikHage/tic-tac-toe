@@ -23,24 +23,15 @@
             </h1>
 
             <h2 class="mb-10">{{ messageText }}</h2>
-            <v-row v-for="(row, rowIndex) of board" :key="rowIndex" class="board-row">
-              <v-col v-for="(cell, cellIndex) of row" cols="4" :key="cellIndex">
-                <v-card
-                    :class="getCardClasses()"
-                    height="120px"
-                    @click="place(rowIndex, cellIndex)"
-                    :disabled="!isCellClickable(cell)">
-                  <v-card-text>
-                    <span :class="getCellTextClasses(cell)">{{ cell }}</span>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
+            <game-board
+                :content="board"
+                :is-disabled="this.isTie || this.winner !== null"
+                :place-mark="placeMark"/>
           </v-col>
           <v-col cols="1"></v-col>
           <v-col cols="3">
             <h2 class="mb-5">Game History</h2>
-            <game-history :games="previousGames"></game-history>
+            <game-history :games="previousGames"/>
           </v-col>
         </v-row>
       </v-col>
@@ -52,9 +43,11 @@
 import logo from '../assets/feralrooster.jpg';
 import {X, O, BLANK} from '@/js/constants';
 import GameHistory from './GameHistory.vue';
+import GameBoard from './GameBoard.vue';
 
 export default {
   components: {
+    GameBoard,
     GameHistory,
   },
   data: () => ({
@@ -84,7 +77,7 @@ export default {
     }
   },
   methods: {
-    place(x, y) {
+    placeMark(x, y) {
       this.board[x][y] = this.currentPlayer;
       if (this.checkWin()) {
         this.win();
@@ -128,9 +121,6 @@ export default {
       }
       return true;
     },
-    isCellClickable(cell) {
-      return cell === BLANK && this.isTie === false && this.winner === null;
-    },
     win() {
       this.winner = this.currentPlayer;
       this.saveGame(this.winner);
@@ -162,48 +152,7 @@ export default {
         }),
       });
     },
-    getCardClasses() {
-      let classes = ["d-flex", "align-center", "justify-center"];
-
-      if (this.winner !== null || this.isTie === true) {
-        classes.push("disabled-cell");
-      }
-
-      return classes.join(" ");
-    },
-    getCellTextClasses(cell) {
-      let classes = ["board-cell"];
-      if (cell === X) {
-        classes.push("cell-x");
-      } else if (cell === O) {
-        classes.push("cell-o");
-      }
-
-      if (this.winner !== null || this.isTie === true) {
-        classes.push("disabled-cell");
-      }
-
-      return classes.join(" ");
-    }
   },
   name: 'TicTacToe',
 }
 </script>
-<style>
-.board-cell {
-  font-size: 60px;
-  cursor: pointer;
-}
-
-.cell-x {
-  color: #f00;
-}
-
-.cell-o {
-  color: #00f;
-}
-
-.disabled-cell {
-  background-color: grey !important;
-}
-</style>
