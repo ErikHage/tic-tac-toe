@@ -3,26 +3,21 @@
     <v-row class="text-center">
       <v-col cols="12">
         <v-img :src="logo" class="my-3" contain height="120"/>
+        <h1 class="mb-4">Let's Play Tic Tac Toe!</h1>
+        <action-buttons
+            :reset="reset"
+            :clear-history="clearHistory"/>
       </v-col>
 
-      <v-col class="mb-5" cols="12">
-        <v-row justify="center">
-          <v-col cols="3">
-            <h2 class="mb-5">Options</h2>
-            <action-buttons :reset="reset" :clear-history="clearHistory"/>
-          </v-col>
-          <v-col cols="1"></v-col>
-          <v-col class="mb-2" cols="4">
-            <h1 class="display-2 font-weight-bold mb-3">
-              Let's Play Tic Tac Toe!
-            </h1>
-            <h2 class="mb-10">{{ messageText }}</h2>
+      <v-col cols="12">
+        <v-row justify="space-around">
+          <v-col class="mb-2" cols="5">
+            <h2 class="mb-4">{{ messageText }}</h2>
             <game-board
                 :content="board"
                 :is-disabled="this.isTie || this.winner !== null"
                 :place-mark="placeMark"/>
           </v-col>
-          <v-col cols="1"></v-col>
           <v-col cols="3">
             <h2 class="mb-5">Game History</h2>
             <game-history :games="previousGames"/>

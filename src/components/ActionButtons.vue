@@ -1,10 +1,6 @@
 <template>
-  <div class="mb-4">
-    <v-btn @click="reset">Reset</v-btn>
-  </div>
-  <div class="mb-4">
-    <v-btn @click="clearHistory">Clear History</v-btn>
-  </div>
+  <v-btn class="mr-4" @click="reset">Reset</v-btn>
+  <v-btn @click="clearHistory">Clear History</v-btn>
 </template>
 <script>
 export default {
