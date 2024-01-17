@@ -133,6 +133,7 @@ export default {
     },
     clearHistory() {
       this.previousGames = [];
+      this.gameCount = 1;
     },
     saveGame(winner) {
       this.previousGames.push({
