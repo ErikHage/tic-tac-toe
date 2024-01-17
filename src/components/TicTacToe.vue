@@ -122,7 +122,11 @@ export default {
     },
     reset() {
       this.switchPlayer();
-      this.gameCount = this.gameCount + 1;
+
+      if (this.winner !== null || this.isTie === true) {
+        this.gameCount = this.gameCount + 1;
+      }
+
       this.winner = null;
       this.isTie = false;
       this.board = [
