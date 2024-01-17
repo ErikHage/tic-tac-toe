@@ -11,14 +11,14 @@
 
       <v-col cols="12">
         <v-row justify="space-around">
-          <v-col class="mb-2" cols="5">
+          <v-col class="mb-2" cols="12" md="5">
             <h2 class="mb-4">{{ messageText }}</h2>
             <game-board
                 :content="board"
                 :is-disabled="this.isTie || this.winner !== null"
                 :place-mark="placeMark"/>
           </v-col>
-          <v-col cols="3">
+          <v-col cols="12" md="3">
             <h2 class="mb-5">Game History</h2>
             <game-history :games="previousGames"/>
           </v-col>
