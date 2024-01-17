@@ -9,19 +9,13 @@
         <v-row justify="center">
           <v-col cols="3">
             <h2 class="mb-5">Options</h2>
-            <div class="mb-4">
-              <v-btn @click="reset">Reset</v-btn>
-            </div>
-            <div class="mb-4">
-              <v-btn @click="clearHistory">Clear History</v-btn>
-            </div>
+            <action-buttons :reset="reset" :clear-history="clearHistory"/>
           </v-col>
           <v-col cols="1"></v-col>
           <v-col class="mb-2" cols="4">
             <h1 class="display-2 font-weight-bold mb-3">
               Let's Play Tic Tac Toe!
             </h1>
-
             <h2 class="mb-10">{{ messageText }}</h2>
             <game-board
                 :content="board"
@@ -44,11 +38,13 @@ import logo from '../assets/feralrooster.jpg';
 import {X, O, BLANK} from '@/js/constants';
 import GameHistory from './GameHistory.vue';
 import GameBoard from './GameBoard.vue';
+import ActionButtons from './ActionButtons.vue';
 
 export default {
   components: {
     GameBoard,
     GameHistory,
+    ActionButtons,
   },
   data: () => ({
     logo,
